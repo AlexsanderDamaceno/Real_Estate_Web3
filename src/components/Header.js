@@ -1,26 +1,24 @@
 import { Link } from "react-router-dom";
 
+import Logo from '../assets/Logo.png'; 
+
 const Header = () => 
 {
 
  return (
 
-  <div>
-
-  <div className="container flex">
-
-  <div className="flex gap-6 items-center">
-
-  <Link className="bg-blue-600 hover:bg-blue-800 transition text-white px-4 py-3 rounded-lg" to=''> MarketPlace</Link>
-  <Link className="bg-blue-600 hover:bg-blue-800 transition text-white px-4 py-3 rounded-lg" to=''> Sell </Link>
-  <Link className="bg-blue-600 hover:bg-blue-800 transition text-white px-4 py-3 rounded-lg" to=''> My Houses </Link>
-  <Link className="bg-blue-600 hover:bg-blue-800 transition text-white px-4 py-3 rounded-lg" to=''> Log in</Link>
-  
-  </div> 
-
-  </div>
-  
-  </div>
+     <div className="bg-blue-500 text-white p-4 flex justify-between items-center">
+      <div className="flex items-center">
+        <img src={Logo} alt="Company Logo" className="h-8 mr-2" />
+        <span className="text-lg font-bold">EtherHomes</span>
+      </div>
+      <div className="flex space-x-4">
+        <Link to="/marketplace" className="hover:text-gray-300">MarketPlace</Link>
+         <Link to="/buy" className="hover:text-gray-300">Buy</Link>
+         <Link to="/myhouses" className="hover:text-gray-300">MyHouses</Link>
+         <Link to="/connectaccount" className="hover:text-gray-300">Connect Account</Link>
+        </div>
+    </div>
 
  );
 
