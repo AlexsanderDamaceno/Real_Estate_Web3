@@ -101,6 +101,60 @@ contract NFTMarketplace is ERC721URIStorage {
             true
         );
     }
+
+
+    function getAllHouses() public view returns (ListedToken[] memory)
+    {
+        uint HouseCount = _tokenIds.current();
+
+        HouseToken[] memory tokens = new ListedToken[](HouseCount);
+
+        uint currentIndex = 0;
+
+        uint currentId;
+        
+
+        for(uint i=0;i< HouseCount;i++)
+        {
+            currentId = i + 1;
+            ListedToken storage currentItem = idToListedToken[currentId];
+            tokens[currentIndex] = currentItem;
+            currentIndex += 1;
+        }
+       
+        return tokens;
+    }
+
+    function getMyHouse() public view returns (HouseToken[] memory) {
+        uint totalItemCount = _tokenIds.current();
+        uint itemCount = 0;
+        uint currentIndex = 0;
+        uint currentId;
+        
+
+        for(uint i=0; i < totalItemCount; i++)
+        {
+            if(idToHouseToken[i+1].owner == msg.sender || idToHouseToken[i+1].seller == msg.sender)
+            {
+                itemCount += 1;
+            }
+        }
+
+        
+        HouseToken[] memory houses = new HouseToken[](itemCount);
+        for(uint i=0; i < totalItemCount; i++) {
+            if(idToHouseToken[i+1].owner == msg.sender || idToHouseToken[i+1].seller == msg.sender) 
+            {
+                currentId = i+1;
+                ListedToken storage currentItem = idToHouseToken[currentId];
+                houses[currentIndex] = currentItem;
+                currentIndex += 1;
+            }
+        }
+
+
+        return houses;
+    }
     
 
 
