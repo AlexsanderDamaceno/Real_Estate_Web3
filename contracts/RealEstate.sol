@@ -71,10 +71,37 @@ contract NFTMarketplace is ERC721URIStorage {
         _setTokenURI(newTokenId, tokenURI);
 
         
-        createListedToken(newTokenId, price);
+        createHouseToken(newTokenId, price);
 
         return newTokenId;
     }
+
+    function createHouseToken(uint256 tokenId, uint256 price) private {
+        
+        require(msg.value == HouseUploadPrice, "Send the correct House upload value");
+    
+        require(price > 0, "Price cannot be negative!");
+
+        
+        idToHouseToken[tokenId] = HouseToken(
+            tokenId,
+            payable(address(this)),
+            payable(msg.sender),
+            price,
+            true
+        );
+
+        _transfer(msg.sender, address(this), tokenId);
+        
+        emit idToHouseToken(
+            tokenId,
+            address(this),
+            msg.sender,
+            price,
+            true
+        );
+    }
+    
 
 
 }
