@@ -36,7 +36,7 @@ contract NFTMarketplace is ERC721URIStorage {
     mapping(uint256 => HouseToken) private idToHouseToken;
 
     function updateHouseUploadPrice(uint256 _HouseUploadPrice) public payable {
-        require(owner == msg.sender, "Only owner can update The House Annunciate price");
+        require(owner == msg.sender, "Only owner can update The House Annunciating price");
         HouseUploadPrice = _HouseUploadPrice;
     }
 
@@ -55,6 +55,25 @@ contract NFTMarketplace is ERC721URIStorage {
 
     function getCurrentToken() public view returns (uint256) {
         return tokenIds.current();
+    }
+
+    function createToken(string memory tokenURI, uint256 price) public payable returns (uint) 
+    {
+        
+        _tokenIds.increment();
+
+        uint256 newTokenId = _tokenIds.current();
+
+        
+        _safeMint(msg.sender, newTokenId);
+
+       
+        _setTokenURI(newTokenId, tokenURI);
+
+        
+        createListedToken(newTokenId, price);
+
+        return newTokenId;
     }
 
 
