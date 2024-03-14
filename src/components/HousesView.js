@@ -28,6 +28,30 @@ const HouseView = () =>
           price: '$300,000',
           imageUrl: 'https://images.rawpixel.com/image_1300/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTA4L3Jhd3BpeGVsX29mZmljZV8xMF9waG90b19vZl9hX21vZGVybl9ob3VzZV9pbl90aGVfY2l0eV9uYXR1cmFsX18yMDdhNWQzOC02M2E5LTRkODItOGU3NC1jYWVlZDU3MzczM2FfMS5qcGc.jpg',
         },
+
+        {
+            id: 4,
+            name: 'Cozy Cottage',
+            description: 'A cozy cottage nestled in the woods',
+            price: '$300,000',
+            imageUrl: 'https://images.rawpixel.com/image_1300/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTA4L3Jhd3BpeGVsX29mZmljZV8xMF9waG90b19vZl9hX21vZGVybl9ob3VzZV9pbl90aGVfY2l0eV9uYXR1cmFsX18yMDdhNWQzOC02M2E5LTRkODItOGU3NC1jYWVlZDU3MzczM2FfMS5qcGc.jpg',
+          },
+
+          {
+            id: 5,
+            name: 'Cozy Cottage',
+            description: 'A cozy cottage nestled in the woods',
+            price: '$300,000',
+            imageUrl: 'https://images.rawpixel.com/image_1300/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTA4L3Jhd3BpeGVsX29mZmljZV8xMF9waG90b19vZl9hX21vZGVybl9ob3VzZV9pbl90aGVfY2l0eV9uYXR1cmFsX18yMDdhNWQzOC02M2E5LTRkODItOGU3NC1jYWVlZDU3MzczM2FfMS5qcGc.jpg',
+          },
+
+          {
+            id: 6,
+            name: 'Cozy Cottage',
+            description: 'A cozy cottage nestled in the woods',
+            price: '$300,000',
+            imageUrl: 'https://images.rawpixel.com/image_1300/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTA4L3Jhd3BpeGVsX29mZmljZV8xMF9waG90b19vZl9hX21vZGVybl9ob3VzZV9pbl90aGVfY2l0eV9uYXR1cmFsX18yMDdhNWQzOC02M2E5LTRkODItOGU3NC1jYWVlZDU3MzczM2FfMS5qcGc.jpg',
+          },
       ];
 
  
