@@ -14,7 +14,7 @@ const Header = () =>
       </div>
       <div className="flex space-x-4">
         <Link to="/marketplace" className="hover:text-gray-300">MarketPlace</Link>
-         <Link to="/buy" className="hover:text-gray-300">Buy</Link>
+         <Link to="/sellhouse" className="hover:text-gray-300">Sell</Link>
          <Link to="/myhouses" className="hover:text-gray-300">MyHouses</Link>
          <Link to="/connectaccount" className="hover:text-gray-300">Connect Account</Link>
         </div>
