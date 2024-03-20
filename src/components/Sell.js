@@ -1,12 +1,13 @@
 import Navbar from "./Header";
 import { useState } from "react";
-import Marketplace from '../HouseRealEstate.json';
+import HouseRealEstate from '../HouseRealEstate.json';
 import { uploadFileToIPFS, uploadJSONToIPFS }  from "../pinate.js";
 import { useLocation } from "react-router";
 
 
 
-export default function SellHouse () {
+export default function SellHouse () 
+{
 
 
   
@@ -17,10 +18,13 @@ export default function SellHouse () {
     const ethers = require("ethers");
     const [message, updateMessage] = useState('');
     const location = useLocation();
+    
 
     async function OnChangeFile(e) 
     {
         var file = e.target.files[0];
+
+        console.log(ethers.version)
         
         try {
             
@@ -71,31 +75,97 @@ export default function SellHouse () {
         }
     }
 
+    async function resolveENSName(ensName) {
+        const provider = ethers.getDefaultProvider(); // Use your Ethereum provider
+        const address = await provider.resolveName(ensName);
+        return address;
+    }
+
+    async function listNFT(e)
+    {
+        e.preventDefault();
+
+       
+        try {
+            const metadataURL = await uploadMetadataToIPFS();
+
+            if(metadataURL === -1)
+                return;
+
+    
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+        
+
+
+            
+
+           const signer = await provider.getSigner();
+
+           console.log("name: " + resolveENSName(HouseRealEstate.contractName + ".eth"));
+
+           
+
+
+
+            updateMessage("Uploading House NFT(takes  about 5 mins).. please dont click anything!")
+
+         //   console.log(HouseRealEstate)
+            let contract = new ethers.Contract(process.env.REACT_APP_CONTRACT_ADRESS, HouseRealEstate.abi, signer);
+
+           // console.log("address" + contract.address);
+
+           
+
+           
+            const price = ethers.utils.parseUnits(formParams.price, 'ether')
+            let listingPrice = await contract.getHouseUploadPrice()
+            listingPrice = listingPrice.toString()
+
+        
+
+            
+            let transaction = await contract.createToken(metadataURL, price, { value: listingPrice })
+            await transaction.wait()
+
+            alert("Successfully listed your NFT!");
+           
+            updateMessage("");
+            updateFormParams({ name: '', description: '', price: ''});
+            window.location.replace("/")
+
+            
+        }
+        catch(e) {
+            alert( "Upload error"+e )
+        }
+    }
+
     return (
         <div className="">
         <Navbar></Navbar>
+       
         <div className="flex flex-col place-items-center mt-10" id="nftForm">
             <form className="bg-white shadow-md rounded px-8 pt-4 pb-8 mb-4">
             <h3 className="text-center font-bold text-blue-500 mb-8">Upload your House to the  House marketplace</h3>
                 <div className="mb-4">
                     <label className="block text-blue-500 text-sm font-bold mb-2" htmlFor="name">House Name</label>
-                    <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="name" type="text" placeholder="Axie#4563" onChange={e => updateFormParams({...formParams, name: e.target.value})} value={formParams.name}></input>
+                    <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="name" type="text" placeholder="House Name..." onChange={e => updateFormParams({...formParams, name: e.target.value})} value={formParams.name}></input>
                 </div>
                 <div className="mb-6">
                     <label className="block text-blue-500 text-sm font-bold mb-2" htmlFor="description">House Description</label>
-                    <textarea className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" cols="40" rows="5" id="description" type="text" placeholder="Axie Infinity Collection" value={formParams.description} onChange={e => updateFormParams({...formParams, description: e.target.value})}></textarea>
+                    <textarea className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" cols="40" rows="5" id="description" type="text" placeholder="House Description" value={formParams.description} onChange={e => updateFormParams({...formParams, description: e.target.value})}></textarea>
                 </div>
                 <div className="mb-6">
                     <label className="block text-blue-500 text-sm font-bold mb-2" htmlFor="price">Price (in ETH)</label>
                     <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="number" placeholder="Min 0.01 ETH" step="0.01" value={formParams.price} onChange={e => updateFormParams({...formParams, price: e.target.value})}></input>
                 </div>
                 <div>
-                    <label className="block text-blue-500 text-sm font-bold mb-2" htmlFor="image">Upload Image (&lt;500 KB)</label>
-                    <input type={"file"} onChange={""}></input>
+                    <label className="block text-blue-500 text-sm font-bold mb-2" htmlFor="image">Upload Image</label>
+                    <input type={"file"} onChange={OnChangeFile}></input>
                 </div>
                 <br></br>
                 <div className="text-red-500 text-center">{message}</div>
-                <button onClick={""} className="font-bold mt-10 w-full bg-blue-500 text-white rounded p-2 shadow-lg" id="list-button">
+                <button onClick={listNFT} className="font-bold mt-10 w-full bg-blue-500 text-white rounded p-2 shadow-lg" id="list-button">
                     Upload House
                 </button>
             </form>

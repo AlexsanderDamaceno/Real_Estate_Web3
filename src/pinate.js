@@ -1,7 +1,11 @@
-const key = process.env.REACT_APP_PINATA_KEY;
-const secret = process.env.REACT_APP_PINATA_SECRET;
 
-const axios = require('axios');
+import axios from "axios";
+
+const key    = process.env.REACT_APP_REACT_APP_PINATA_KEY;
+const secret = process.env.REACT_APP_REACT_APP_PINATA_SECRET;
+
+
+
 const FormData = require('form-data');
 
 export const uploadJSONToIPFS = async(JSONBody) => {
@@ -86,4 +90,11 @@ export const uploadFileToIPFS = async(file) => {
             }
 
     });
+};
+
+export const GetIpfsUrlFromPinata = (pinataUrl) => {
+    var IPFSUrl = pinataUrl.split("/");
+    const lastIndex = IPFSUrl.length;
+    IPFSUrl = "https://ipfs.io/ipfs/"+IPFSUrl[lastIndex-1];
+    return IPFSUrl;
 };

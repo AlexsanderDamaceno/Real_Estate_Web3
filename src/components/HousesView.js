@@ -2,57 +2,77 @@ import { Link } from "react-router-dom";
 import { ImSpinner2 } from "react-icons/im";
 import { useContext } from "react";
 import HouseCard from './HouseCards.js';
+import HouseRealEstate from '../HouseRealEstate.json';
+import axios from "axios";
+import { useState } from "react";
+
+
 
 const HouseView = () => 
 {
 
-    const houses = [
-        {
-          id: 1,
-          name: 'Modern House',
-          description: 'A beautiful modern house with scenic views',
-          price: '$500,000',
-          imageUrl: 'https://images.rawpixel.com/image_1300/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTA4L3Jhd3BpeGVsX29mZmljZV8xMF9waG90b19vZl9hX21vZGVybl9ob3VzZV9pbl90aGVfY2l0eV9uYXR1cmFsX18yMDdhNWQzOC02M2E5LTRkODItOGU3NC1jYWVlZDU3MzczM2FfMS5qcGc.jpg',
-        },
-        {
-          id: 2,
-          name: 'Classic Villa',
-          description: 'A classic villa with a spacious garden',
-          price: '$700,000',
-          imageUrl: 'https://images.rawpixel.com/image_1300/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTA4L3Jhd3BpeGVsX29mZmljZV8xMF9waG90b19vZl9hX21vZGVybl9ob3VzZV9pbl90aGVfY2l0eV9uYXR1cmFsX18yMDdhNWQzOC02M2E5LTRkODItOGU3NC1jYWVlZDU3MzczM2FfMS5qcGc.jpg',
-        },
-        {
-          id: 3,
-          name: 'Cozy Cottage',
-          description: 'A cozy cottage nestled in the woods',
-          price: '$300,000',
-          imageUrl: 'https://images.rawpixel.com/image_1300/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTA4L3Jhd3BpeGVsX29mZmljZV8xMF9waG90b19vZl9hX21vZGVybl9ob3VzZV9pbl90aGVfY2l0eV9uYXR1cmFsX18yMDdhNWQzOC02M2E5LTRkODItOGU3NC1jYWVlZDU3MzczM2FfMS5qcGc.jpg',
-        },
+const houses = [];
 
-        {
-            id: 4,
-            name: 'Cozy Cottage',
-            description: 'A cozy cottage nestled in the woods',
-            price: '$300,000',
-            imageUrl: 'https://images.rawpixel.com/image_1300/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTA4L3Jhd3BpeGVsX29mZmljZV8xMF9waG90b19vZl9hX21vZGVybl9ob3VzZV9pbl90aGVfY2l0eV9uYXR1cmFsX18yMDdhNWQzOC02M2E5LTRkODItOGU3NC1jYWVlZDU3MzczM2FfMS5qcGc.jpg',
-          },
 
-          {
-            id: 5,
-            name: 'Cozy Cottage',
-            description: 'A cozy cottage nestled in the woods',
-            price: '$300,000',
-            imageUrl: 'https://images.rawpixel.com/image_1300/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTA4L3Jhd3BpeGVsX29mZmljZV8xMF9waG90b19vZl9hX21vZGVybl9ob3VzZV9pbl90aGVfY2l0eV9uYXR1cmFsX18yMDdhNWQzOC02M2E5LTRkODItOGU3NC1jYWVlZDU3MzczM2FfMS5qcGc.jpg',
-          },
+const [data, updateData] = useState(houses);
+const [dataFetched, updateFetched] = useState(false);
 
-          {
-            id: 6,
-            name: 'Cozy Cottage',
-            description: 'A cozy cottage nestled in the woods',
-            price: '$300,000',
-            imageUrl: 'https://images.rawpixel.com/image_1300/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTA4L3Jhd3BpeGVsX29mZmljZV8xMF9waG90b19vZl9hX21vZGVybl9ob3VzZV9pbl90aGVfY2l0eV9uYXR1cmFsX18yMDdhNWQzOC02M2E5LTRkODItOGU3NC1jYWVlZDU3MzczM2FfMS5qcGc.jpg',
-          },
-      ];
+const GetIpfsUrlFromPinata = (pinataUrl) => 
+{
+  var IPFSUrl = pinataUrl.split("/");
+  const lastIndex = IPFSUrl.length;
+  IPFSUrl = "https://ipfs.io/ipfs/"+IPFSUrl[lastIndex-1];
+  return IPFSUrl;
+};
+
+async function  getAllNFTs() {
+    const ethers = require("ethers");
+    
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+  
+
+    const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+    const signer = provider.getSigner(accounts[0]);
+    alert(process.env.REACT_APP_CONTRACT_ADRESS);
+    let contract = new ethers.Contract(process.env.REACT_APP_CONTRACT_ADRESS, HouseRealEstate.abi, signer)
+  
+   
+    let transaction = await contract.getAllHouses()
+  
+
+   
+    const items = await Promise.all(transaction.map(async i => {
+
+        var tokenURI = await contract.tokenURI(i.tokenId);
+
+       
+
+        tokenURI = GetIpfsUrlFromPinata(tokenURI);
+
+        let meta = await axios.get(tokenURI);
+        meta = meta.data;
+
+       
+
+        let price = ethers.utils.formatUnits(i.price.toString(), 'ether');
+        let item = {
+            price,
+            tokenId: i.tokenId.toNumber(),
+            seller: i.seller,
+            owner: i.owner,
+            image: meta.image,
+            name: meta.name,
+            description: meta.description,
+        }
+        return item;
+    }))
+
+    updateFetched(true);
+    updateData(items);
+}
+
+if(!dataFetched)
+    getAllNFTs();
 
  
 
@@ -60,11 +80,10 @@ const HouseView = () =>
  return (
 
 
-
   <div className="container mx-auto">
   <h1 className="text-3xl font-bold mb-4">Available Houses</h1>
   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-    {houses.map(house => (
+    {data && data.map(house => (
       <HouseCard key={house.id} house={house} />
     ))}
   </div>

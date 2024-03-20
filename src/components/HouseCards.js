@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useEffect , useState } from "react";
-
+import { GetIpfsUrlFromPinata } from "../pinate";
 
 const HouseCard = ({ house }) => {
 
@@ -14,15 +14,17 @@ const HouseCard = ({ house }) => {
         setShowModal(false);
     };
     
+    
+    const ImageIPFSUrl = GetIpfsUrlFromPinata(house.image);
 
 
     return (
        <div>
           <div className="bg-white rounded-lg shadow-md p-4 cursor-pointer" onClick={toggleModal}>
-            <img src={house.imageUrl} alt={house.name} className="mb-4" />
+            <img src={ImageIPFSUrl} alt={house.name} className="mb-4  w-full" />
             <h2 className="text-xl font-bold">{house.name}</h2>
             <p className="text-gray-600 mb-2">{house.description}</p>
-            <p className="text-gray-800 font-semibold">{house.price}</p>
+            <p className="text-gray-800 font-semibold">{house.price}{"  Ether"}</p>
           </div>
 
           {showModal && (
@@ -44,10 +46,11 @@ const HouseCard = ({ house }) => {
                 </svg>
                
                 </button>
-                <img src={house.imageUrl} alt={house.name} className="mb-4" />
+
+                <img src={ImageIPFSUrl} alt={house.name} className="mb-4 w-full" />
                 <h2 className="text-xl font-bold">{house.name}</h2>
                 <p className="text-gray-600 mb-2">{house.description}</p>
-                <p className="text-gray-800 font-semibold">{house.price}</p>
+                <p className="text-gray-800 font-semibold">{house.price} {"  Ether"}</p>
                 <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">Buy</button>
               
               </div>
