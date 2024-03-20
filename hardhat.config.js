@@ -4,8 +4,8 @@ const fs = require('fs');
 
 require("dotenv").config();
 
-const SEPOLIA_URL = process.env.SEPOLIO;
-const PRIVATE_KEY = process.env.PRIVATE_KEY;
+const SEPOLIA_URL = process.env.REACT_APP_SEPOLIO;
+const PRIVATE_KEY = process.env.REACT_APP_PRIVATE_KEY;
 
 
 // const infuraId = fs.readFileSync(".infuraid").toString().trim() || "";

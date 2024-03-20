@@ -65,6 +65,8 @@ contract HouseRealEstate is ERC721URIStorage {
         return _tokenIds.current();
     }
 
+
+
     function createToken(string memory tokenURI, uint256 price) public payable returns (uint) 
     {
         
@@ -169,7 +171,7 @@ contract HouseRealEstate is ERC721URIStorage {
         require(msg.value == price, "Value send is not the House price!");
 
         
-        idToHouseToken[tokenId].currentlyListed = true;
+        idToHouseToken[tokenId].currentlyListed = false;
         idToHouseToken[tokenId].seller = payable(msg.sender);
         _HousesSold.increment();
 

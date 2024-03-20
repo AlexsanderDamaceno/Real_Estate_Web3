@@ -3,15 +3,12 @@ import { useState } from "react";
 import HouseRealEstate from '../HouseRealEstate.json';
 import { uploadFileToIPFS, uploadJSONToIPFS }  from "../pinate.js";
 import { useLocation } from "react-router";
+import Footer from "./Footer.js";
 
 
 
 export default function SellHouse () 
 {
-
-
-  
-
 
     const [formParams, updateFormParams] = useState({ name: '', description: '', price: ''});
     const [fileURL, setFileURL] = useState(null);
@@ -81,7 +78,7 @@ export default function SellHouse ()
         return address;
     }
 
-    async function listNFT(e)
+    async function listHouse(e)
     {
         e.preventDefault();
 
@@ -94,29 +91,18 @@ export default function SellHouse ()
 
     
             const provider = new ethers.providers.Web3Provider(window.ethereum);
-        
-
-
             
+            const signer = await provider.getSigner();
 
-           const signer = await provider.getSigner();
-
-           console.log("name: " + resolveENSName(HouseRealEstate.contractName + ".eth"));
-
-           
-
+            console.log("name: " + resolveENSName(HouseRealEstate.contractName + ".eth"));
 
 
             updateMessage("Uploading House NFT(takes  about 5 mins).. please dont click anything!")
 
-         //   console.log(HouseRealEstate)
+       
             let contract = new ethers.Contract(process.env.REACT_APP_CONTRACT_ADRESS, HouseRealEstate.abi, signer);
 
-           // console.log("address" + contract.address);
-
-           
-
-           
+  
             const price = ethers.utils.parseUnits(formParams.price, 'ether')
             let listingPrice = await contract.getHouseUploadPrice()
             listingPrice = listingPrice.toString()
@@ -141,6 +127,7 @@ export default function SellHouse ()
     }
 
     return (
+        <div>
         <div className="">
         <Navbar></Navbar>
        
@@ -165,11 +152,13 @@ export default function SellHouse ()
                 </div>
                 <br></br>
                 <div className="text-red-500 text-center">{message}</div>
-                <button onClick={listNFT} className="font-bold mt-10 w-full bg-blue-500 text-white rounded p-2 shadow-lg" id="list-button">
+                <button onClick={listHouse} className="font-bold mt-10 w-full bg-blue-500 text-white rounded p-2 shadow-lg" id="list-button">
                     Upload House
                 </button>
             </form>
-        </div>
+            </div>
+          </div>
+         <Footer position={"relative"}/>
         </div>
     )
 }

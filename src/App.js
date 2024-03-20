@@ -13,15 +13,10 @@ function App()
 
 
   return (
-    <div className>
-    <Header/>
-   
-    <div className="pt-10">
-       <Banner/>
-    </div>
+    <div>
    
     <HouseView/>
-    <Footer/>
+   
     </div>
   );
 }

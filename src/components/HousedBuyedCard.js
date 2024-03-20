@@ -2,11 +2,11 @@ import { Link } from "react-router-dom";
 import { useEffect , useState } from "react";
 import { GetIpfsUrlFromPinata } from "../pinate";
 import HouseRealEstate from '../HouseRealEstate.json';
-import {BigNumber } from "ethers";
 
-const HouseCard = ({ house }) => {
 
-    console.log("house : " + house.image);
+const HouseCardBuyed = ({ house }) => {
+
+    
 
     const [showModal, setShowModal] = useState(false);
 
@@ -35,22 +35,14 @@ const HouseCard = ({ house }) => {
   
          
           let contract = new ethers.Contract(process.env.REACT_APP_CONTRACT_ADRESS, HouseRealEstate.abi, signer);
-          let salePrice = ethers.utils.parseUnits(house.price, 'ether')
-
-         
-
-         
-         
+          const salePrice = ethers.utils.parseUnits(house.price, 'ether')
 
           updateMessage("Buying the House... Please Wait While Processing Transaction")
 
-   
+      
 
-          alert(tokenId)
-          if(house && house.price){
-              let transaction = await contract.executeSale(tokenId, {value: salePrice.toString()});
-              await transaction.wait();
-          }
+          let transaction = await contract.executeSale(tokenId, {value:salePrice});
+          await transaction.wait();
   
           alert('You successfully bought the  House!');
           updateMessage("");
@@ -69,7 +61,7 @@ const HouseCard = ({ house }) => {
             <img src={ImageIPFSUrl} alt={house.name} className="mb-4  w-full" />
             <h2 className="text-xl font-bold">{house.name}</h2>
             <p className="text-gray-600 mb-2">{house.description}</p>
-            <p className="text-gray-800 font-semibold">{house.price}{"  Ether"}</p>
+            <p className="text-gray-800 font-semibold">{"Price "}{house.price}{"  Ether"}</p>
           </div>
 
           {showModal && (
@@ -95,9 +87,8 @@ const HouseCard = ({ house }) => {
                 <img src={ImageIPFSUrl} alt={house.name} className="mb-4 w-full" />
                 <h2 className="text-xl font-bold">{house.name}</h2>
                 <p className="text-gray-600 mb-2">{house.description}</p>
-                <p className="text-gray-800 font-semibold">{house.price} {"  Ether"}</p>
-                <button onClick={() => buyNFT(house.tokenId)}className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">Buy</button>
-              
+                <p className="text-gray-800 font-semibold">{"Price "} {house.price} {"  Ether"}</p>
+                           
               </div>
             </div>
           )}
@@ -107,4 +98,4 @@ const HouseCard = ({ house }) => {
     
   };
 
-  export default HouseCard;
+  export default HouseCardBuyed;

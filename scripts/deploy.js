@@ -23,10 +23,10 @@ async function main() {
   await houseRealEstate.deployed();
 
  
-  console.log("Real Estate Contract Address : ", HouseRealEstate)
+  //console.log("Real Estate Contract Address : ", HouseRealEstate)
 
   //This writes the ABI and address to the mktplace.json
-  fs.writeFileSync('../HouseRealEstate.json', JSON.stringify(data))
+  fs.writeFileSync('../HouseRealEstate.json', JSON.stringify(HouseRealEstate))
 
 
 

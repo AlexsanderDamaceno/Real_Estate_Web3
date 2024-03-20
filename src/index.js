@@ -6,6 +6,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter , Route, Routes } from 'react-router-dom';
 import SellHouse from './components/Sell';
+import ListMyHouses from './components/MyHouses.js';
 
 
 
@@ -18,7 +19,9 @@ root.render(
   <Route path="/" element={<App />} />
   <Route path="/marketplace" element={<App />} />
   <Route path="/sellhouse"   element={<SellHouse />} />
-  
+  <Route path="/myhouses"   element={<ListMyHouses />} />
+
+
   
   </Routes>
 
